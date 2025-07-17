@@ -1,7 +1,8 @@
 // src/pages/EventLog.jsx
 import Header from '../Components/Header';
 import Sidebar from '../Components/Sidebar';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from "axios";
 
 const eventColors = {
   'Seatbelt Compliance': '#ffe0e0',
@@ -11,7 +12,7 @@ const eventColors = {
   'Sharp Turn at High Speed': '#e8f5e9'
 };
 
-const hardcodedEvents = [
+const mockhardcodedEvents = [
   {
     type: 'Seatbelt Compliance',
     vehicleId: 'VEH001',
@@ -41,6 +42,22 @@ const hardcodedEvents = [
 
 const EventLog = () => {
   const [filterType, setFilterType] = useState('All');
+  const [hardcodedEvents, setHardcodedEvents] = useState([]);
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try{
+          const receivedEvents = await axios.get("http://localhost:3000/events");
+          console.log(receivedEvents["data"]);
+          setHardcodedEvents(receivedEvents["data"]);
+        }
+        catch(error){
+          console.log("error while fetching tasks", error);
+        }
+      }
+      fetchEvents();
+  }, []);
+
 
   const filteredEvents =
     filterType === 'All'

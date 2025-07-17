@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
-const videoList = [
+const mockvideoList = [
   {
     id: 1,
     title: 'Machine Operation Basics',
@@ -26,6 +27,21 @@ const TrainingHub = () => {
   const [name, setName] = useState('');
   const [confirmation, setConfirmation] = useState('');
   const [showBookingForm, setShowBookingForm] = useState(false);
+  const [videoList, setVideoList] = useState([]);
+
+  useEffect(() => {
+    const fetchVideos = async() => {
+      try{
+          const receivedVideos = await axios.get("http://localhost:3000/videos");
+          console.log(receivedVideos["data"]);
+          setVideoList(receivedVideos["data"]);
+        }
+        catch(error){
+          console.log("error while fetching tasks", error);
+        }
+    }
+    fetchVideos();
+  }, []);
 
   const handleBooking = () => {
     if (name && selectedDate) {
@@ -50,7 +66,7 @@ const TrainingHub = () => {
             <div className="aspect-w-16 aspect-h-9">
               <iframe
                 className="w-full h-150 rounded"
-                src={video.url}
+                src={video.link}
                 title={video.title}
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

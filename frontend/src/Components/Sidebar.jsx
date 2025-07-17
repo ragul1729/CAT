@@ -9,6 +9,7 @@ const Sidebar = () => {
     { path: '/', label: 'Home', icon: <Home size={20} /> },
     { path: '/training', label: 'Training', icon: <BookOpen size={20} /> },
     { path: '/predict', label: 'Task Time Prediction', icon: <Clock size={20} /> },
+    { path: '/excavationTimer', label: 'Excavation Time Prediction', icon: <Clock size={20} /> },
     { path: '/logging', label: 'Event Log', icon: <Clock size={20} /> }
   ];
 

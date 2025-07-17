@@ -8,6 +8,7 @@ import Training from './pages/Training';
 import TasktimePrediction from './pages/TasktimePrediction';
 import SafetyAlertBar from './Components/SafetyAlertBar'; 
 import EventLog from './pages/EventLog';
+import ExcavationTimer from './pages/ExcavationTimer';
 
 // Redirects unauthenticated users to login
 const ProtectedRoute = ({ children }) => {
@@ -25,6 +26,7 @@ function App() {
       <SafetyAlertBar /> {/* ✅ Global Alert Bar shown on all pages */}
       <Routes>
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/excavationTimer" element={<ProtectedRoute><ExcavationTimer/></ProtectedRoute>} />
         <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
         <Route path="/training" element={<ProtectedRoute><Training /></ProtectedRoute>} />
         <Route path="/predict" element={<ProtectedRoute><TasktimePrediction /></ProtectedRoute>} />

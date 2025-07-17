@@ -1,6 +1,7 @@
 import Header from '../Components/Header';
 import Sidebar from '../Components/Sidebar';
 import { useEffect, useState } from 'react';
+import axios from "axios";
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import {
@@ -61,12 +62,26 @@ const Dashboard = () => {
   const today = new Date();
   const [selectedDate, setSelectedDate] = useState(today);
   const [filteredTasks, setFilteredTasks] = useState([]);
-  const [tasks, setTasks] = useState(mockTasks);
+  const [tasks, setTasks] = useState([]);
+  
+  useEffect(() => {
+    const fetchTasks = async () => {
+      try{
+          const receivedTasks = await axios.get("http://localhost:3000/tasks");
+          console.log(receivedTasks["data"]);
+          setTasks(receivedTasks["data"]);
+        }
+        catch(error){
+          console.log("error while fetching tasks", error);
+        }
+      }
+      fetchTasks();
+  }, []);
 
   useEffect(() => {
     const formatted = format(selectedDate, 'yyyy-MM-dd');
     const dailyTasks = tasks
-      .filter(task => task.date === formatted)
+      .filter(task => format(Date(task.date), 'yyyy-MM-dd') === formatted)
       .sort((a, b) => {
         if (a.status === 'completed' && b.status !== 'completed') return 1;
         if (a.status !== 'completed' && b.status === 'completed') return -1;
